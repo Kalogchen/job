@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,7 +12,7 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.intermediary.job.R;
-import com.intermediary.job.model.returnData;
+import com.intermediary.job.model.loginReturnData;
 import com.intermediary.job.utlis.HttpCallbackListener;
 import com.intermediary.job.utlis.HttpPost;
 import com.intermediary.job.utlis.SharedPreferencesUtils;
@@ -25,7 +26,7 @@ import java.net.URLEncoder;
  * Created by kalogchen on 2016/12/19.
  */
 
-public class loginActivity extends Activity{
+public class loginActivity extends Activity {
 
 
     private EditText etAccount;
@@ -52,7 +53,7 @@ public class loginActivity extends Activity{
             String passWord = SharedPreferencesUtils.getString(loginActivity.this, "passWord", "");
             etAccount.setText(account);
             etPassWord.setText(passWord);
-        }else {
+        } else {
             etAccount.setText(account);
         }
 
@@ -88,13 +89,13 @@ public class loginActivity extends Activity{
 
         if (TextUtils.isEmpty(account) || TextUtils.isEmpty(passWord)) {
             ToastUtils.showToast(loginActivity.this, "账号或密码不能为空，请重新输入");
-        }else if(account.length()<6 || account.length()>20 || passWord.length()<6 || passWord.length()>20) {
+        } else if (account.length() < 6 || account.length() > 20 || passWord.length() < 6 || passWord.length() > 20) {
             ToastUtils.showToast(loginActivity.this, "账号或密码长度为6-20个字符，请重新输入");
-        }else {
+        } else {
             try {
-            //拼接出要提交的数据的字符串
-            final String loginData = "account=" + URLEncoder.encode(account, "utf-8") + "&password=" + passWord + "&checkNum=" + checkNum;
-            HttpPost.sendHttpPost(loginUrl, loginData, new HttpCallbackListener() {
+                //拼接出要提交的数据的字符串
+                final String loginData = "account=" + URLEncoder.encode(account, "utf-8") + "&password=" + passWord + "&checkNum=" + checkNum;
+                HttpPost.sendHttpPost(loginUrl, loginData, new HttpCallbackListener() {
                 @Override
                 public void onFinish(final String response) {
                     //通过runOnUiThread（）方法回到主线程处理逻辑
@@ -102,8 +103,13 @@ public class loginActivity extends Activity{
                         @Override
                         public void run() {
                             Gson gson = new Gson();
-                            returnData data = gson.fromJson(response, returnData.class);
+                            loginReturnData data = gson.fromJson(response, loginReturnData.class);
                             String result = data.getResult();
+
+                            //获取cookie
+                            String jsessionid = data.getJSESSIONID();
+                            Log.d("msg", "------------jsessionid:" + jsessionid);
+                            SharedPreferencesUtils.setString(loginActivity.this, "JSESSIONID", "JSESSIONID=" + jsessionid + "; Path=/agencysys; HttpOnly");
                             if (result.equals("true")) {
                                 //记录用户账号密码
                                 SharedPreferencesUtils.setString(loginActivity.this, "account", account);
@@ -125,12 +131,50 @@ public class loginActivity extends Activity{
                 }
             });
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
+                /*OkHttpClient okHttpClient = new OkHttpClient();
+                FormBody formBody = new FormBody.Builder().add("account", URLEncoder.encode(account, "utf-8")).add("password", passWord).add("checkNum", checkNum).build();
+                Request request = new Request.Builder().url(loginUrl).post(formBody).build();
+                okhttp3.Call call = okHttpClient.newCall(request);
 
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(okhttp3.Call call, IOException e) {
+                    }
+                    @Override
+                    public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                        final String str = response.body().string();
+                        Log.d("msg", "-----------登录返回数据：" + str);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Gson gson = new Gson();
+                                loginReturnData data = gson.fromJson(str, loginReturnData.class);
+                                String result = data.getResult();
+                                String jsessionid = data.getJSESSIONID();
+                                SharedPreferencesUtils.setString(loginActivity.this, "JSESSIONID", "JSESSIONID="+jsessionid+"; Path=/agencysys; HttpOnly");
+                                if (result.equals("true")) {
+                                    //记录用户账号密码
+                                    SharedPreferencesUtils.setString(loginActivity.this, "account", account);
+                                    SharedPreferencesUtils.setString(loginActivity.this, "passWord", passWord);
+                                    //记录用户是否点击了“记住密码”
+                                    SharedPreferencesUtils.setBoolean(loginActivity.this, "savePassWord", checked);
+                                    startActivity(new Intent(loginActivity.this, homeActivity.class));
+                                    finish();
+                                } else if (result.equals("false")) {
+                                    ToastUtils.showToast(loginActivity.this, "账号密码错误，请重新输入");
+                                }
+                            }
+                        });
+
+                    }
+                });*/
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
+
+    }
 
 
 }

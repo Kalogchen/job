@@ -16,10 +16,9 @@ import java.net.URL;
 public class HttpPost {
 
     /**
-     *
-     * @param address   要访问的接口
-     * @param text  要提交的数据
-     * @param listener  回调接口
+     * @param address  要访问的接口
+     * @param text     要提交的数据
+     * @param listener 回调接口
      */
     public static void sendHttpPost(final String address, final String text, final HttpCallbackListener listener) {
         new Thread(new Runnable() {
@@ -37,7 +36,11 @@ public class HttpPost {
                     /*//拼接出要提交的数据的字符串
                     String accountData = "account=" + URLEncoder.encode(account, "utf-8");*/
                     //添加post请求的两行属性
-                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    //设置cookie
+                    String jsessionid = SharedPreferencesUtils.getString(BaseApplication.getContext(), "JSESSIONID", "");
+                    Log.d("msg", "-------------------cookie:" + jsessionid);
+                    conn.addRequestProperty("Cookie", jsessionid);
                     //设置打开输出流
                     conn.setDoOutput(true);
                     //拿到输出流
@@ -45,7 +48,8 @@ public class HttpPost {
                     //使用输出流往服务器提交数据
                     os.write(text.getBytes());
                     //判断数据是否提交成功，返回值为200表示提交成功
-                    if (conn.getResponseCode()==200) {
+                    if (conn.getResponseCode() == 200) {
+
                         InputStream is = conn.getInputStream();
                         String data = StreamUtlis.getTextFromStream(is);
 
@@ -60,7 +64,7 @@ public class HttpPost {
                     Log.d("msg", "----------无法将String转换为Url");
                 } catch (IOException e) {
                     Log.d("msg", "----------无法打开链接");
-                }finally {
+                } finally {
                     if (conn != null) {
                         conn.disconnect();
                     }

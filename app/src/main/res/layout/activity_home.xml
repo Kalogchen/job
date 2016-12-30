@@ -2,11 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.intermediary.job.view.NoScrollViewPager
+        android:id="@+id/vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <RadioGroup
+        android:id="@+id/rg_group"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="this is home page"/>
+        android:orientation="horizontal"
+        android:background="#e0e0e0">
+
+        <RadioButton
+            android:id="@+id/rb_job"
+            style="@style/ButtonTabStyle"
+            android:text="职位"
+            android:drawableTop="@drawable/btn_tab_job_selector"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_company"
+            style="@style/ButtonTabStyle"
+            android:text="公司"
+            android:drawableTop="@drawable/btn_tab_company_selector"
+            />
+        <RadioButton
+            android:id="@+id/rb_message"
+            style="@style/ButtonTabStyle"
+            android:text="消息"
+            android:drawableTop="@drawable/btn_tab_message_selector"
+            />
+        <RadioButton
+            android:id="@+id/rb_my"
+            style="@style/ButtonTabStyle"
+            android:text="我的"
+            android:drawableTop="@drawable/btn_tab_my_selector"
+            />
+
+    </RadioGroup>
 
 </LinearLayout>
