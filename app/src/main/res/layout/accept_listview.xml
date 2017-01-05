@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_accept"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F0F0F0">
+
+    `<TextView
+    android:id="@+id/tv_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#53cac3"
+    android:gravity="center"
+    android:paddingBottom="3dp"
+    android:paddingTop="3dp"
+    android:text="应聘信息"
+    android:textColor="@android:color/white"
+    android:textSize="22sp" />
+
+    <ListView
+        android:id="@+id/lv_accept"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>

@@ -114,6 +114,11 @@ public class loginActivity extends Activity {
                                 //记录用户账号密码
                                 SharedPreferencesUtils.setString(loginActivity.this, "account", account);
                                 SharedPreferencesUtils.setString(loginActivity.this, "passWord", passWord);
+                                //第一次进入才初始化界面
+                                SharedPreferencesUtils.setInt(loginActivity.this, "jobPager", 0);
+                                SharedPreferencesUtils.setInt(loginActivity.this, "companyPager", 0);
+                                SharedPreferencesUtils.setInt(loginActivity.this, "messagePager", 0);
+                                SharedPreferencesUtils.setInt(loginActivity.this, "myPager", 0);
                                 //记录用户是否点击了“记住密码”
                                 SharedPreferencesUtils.setBoolean(loginActivity.this, "savePassWord", checked);
                                 startActivity(new Intent(loginActivity.this, homeActivity.class));
@@ -127,6 +132,12 @@ public class loginActivity extends Activity {
 
                 @Override
                 public void onError(Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showToast(loginActivity.this, "网络错误，请稍后重试！");
+                        }
+                    });
 
                 }
             });

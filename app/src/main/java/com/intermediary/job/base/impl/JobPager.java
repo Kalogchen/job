@@ -17,6 +17,7 @@ import com.intermediary.job.base.BasePager;
 import com.intermediary.job.model.JobMessage;
 import com.intermediary.job.utlis.HttpCallbackListener;
 import com.intermediary.job.utlis.HttpPost;
+import com.intermediary.job.utlis.SharedPreferencesUtils;
 import com.intermediary.job.utlis.ToastUtils;
 
 import org.json.JSONArray;
@@ -42,11 +43,10 @@ public class JobPager extends BasePager {
         super(activity);
     }
 
-    private int i = 0;
-
     @Override
     public void initData() {
-        if (i == 0) {
+        int jobPager = SharedPreferencesUtils.getInt(mActivity, "jobPager", 0);
+        if (jobPager == 0) {
             //刚进来初始化数据，从其他页面再切换过来就不重新初始化
             //修改标题栏
             tvTitle.setText("职 位");
@@ -176,7 +176,7 @@ public class JobPager extends BasePager {
 
                             LinearLayout ll_job = (LinearLayout) view.findViewById(R.id.ll_listView);
                             flContent.addView(ll_job);
-                            i = 1;
+                            SharedPreferencesUtils.setInt(mActivity, "jobPager", 1);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

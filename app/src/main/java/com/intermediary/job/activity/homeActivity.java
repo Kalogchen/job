@@ -19,10 +19,14 @@ import com.intermediary.job.base.impl.MyPager;
 import java.util.ArrayList;
 
 /**
+ * 主页面
  * Created by kalogchen on 2016/12/21.
  */
 
 public class homeActivity extends Activity {
+
+    //用来修改密码后关闭主页面
+    public static homeActivity instance = null;
 
     private RadioGroup rgGroup;
     private ArrayList<BasePager> mPagerList;
@@ -33,6 +37,7 @@ public class homeActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
+        instance = this;
 
         rgGroup = (RadioGroup) findViewById(R.id.rg_group);
         mViewPager = (ViewPager) findViewById(R.id.vp_content);

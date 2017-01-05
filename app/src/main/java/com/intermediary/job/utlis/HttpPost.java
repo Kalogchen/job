@@ -40,7 +40,9 @@ public class HttpPost {
                     //设置cookie
                     String jsessionid = SharedPreferencesUtils.getString(BaseApplication.getContext(), "JSESSIONID", "");
                     Log.d("msg", "-------------------cookie:" + jsessionid);
-                    conn.addRequestProperty("Cookie", jsessionid);
+                    if (jsessionid != null) {
+                        conn.addRequestProperty("Cookie", jsessionid);
+                    }
                     //设置打开输出流
                     conn.setDoOutput(true);
                     //拿到输出流
@@ -63,7 +65,9 @@ public class HttpPost {
                 } catch (MalformedURLException e) {
                     Log.d("msg", "----------无法将String转换为Url");
                 } catch (IOException e) {
-                    Log.d("msg", "----------无法打开链接");
+                    if (listener != null) {
+                        listener.onError(e);
+                    }
                 } finally {
                     if (conn != null) {
                         conn.disconnect();

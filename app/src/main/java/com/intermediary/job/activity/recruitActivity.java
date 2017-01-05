@@ -18,6 +18,7 @@ import com.intermediary.job.utlis.HttpPost;
 import com.intermediary.job.utlis.ToastUtils;
 
 /**
+ * 查看招聘信息页面
  * Created by kalogchen on 2016/12/27.
  */
 
@@ -42,9 +43,6 @@ public class recruitActivity extends Activity {
     private Button btOk;
     private Button btCancel;
     private Button btApply;
-    //记录是否已应聘该招聘
-    private String inviteStatus;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +155,7 @@ public class recruitActivity extends Activity {
                     }
                     @Override
                     public void onError(Exception e) {
+                        ToastUtils.showToast(recruitActivity.this, "网络错误，请稍后重试！");
                     }
                 });
             }

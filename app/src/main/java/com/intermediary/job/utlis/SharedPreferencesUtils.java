@@ -27,10 +27,21 @@ public class SharedPreferencesUtils {
         sp.edit().putString(key, text).commit();
     }
 
-    public static String getString(Context context, String key, String defalutValue) {
+    public static String getString(Context context, String key, String defaultValue) {
         SharedPreferences sp = context.getSharedPreferences(sharePreName, Context.MODE_PRIVATE);
-        String spString = sp.getString(key, defalutValue);
+        String spString = sp.getString(key, defaultValue);
         return spString;
+    }
+
+    public static void setInt(Context context, String key, int record) {
+        SharedPreferences sp = context.getSharedPreferences(sharePreName, Context.MODE_PRIVATE);
+        sp.edit().putInt(key, record).commit();
+    }
+
+    public static int getInt(Context context, String key, int defaultValue) {
+        SharedPreferences sp = context.getSharedPreferences(sharePreName, Context.MODE_PRIVATE);
+        int spInt = sp.getInt(key, defaultValue);
+        return spInt;
     }
 
 }

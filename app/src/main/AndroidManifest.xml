@@ -23,6 +23,10 @@
         <activity android:name=".activity.registerActivity"/>
         <activity android:name=".activity.homeActivity"/>
         <activity android:name=".activity.recruitActivity"/>
+        <activity android:name=".activity.acceptActivity"/>
+        <activity android:name=".activity.changePwdActivity"/>
+        <activity android:name=".activity.resumeActivity"/>
+        <activity android:name=".activity.acceptDetailActivity"/>
 
     </application>
 

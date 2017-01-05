@@ -119,7 +119,12 @@ public class registerActivity extends Activity {
 
                                             @Override
                                             public void onError(Exception e) {
-
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        ToastUtils.showToast(registerActivity.this, "网络错误，请稍后重试！");
+                                                    }
+                                                });
                                             }
                                         });
                                     } catch (UnsupportedEncodingException e) {
@@ -134,7 +139,7 @@ public class registerActivity extends Activity {
 
                     @Override
                     public void onError(Exception e) {
-
+                        ToastUtils.showToast(registerActivity.this, "网络错误，请稍后重试！");
                     }
                 });
             } catch (UnsupportedEncodingException e) {
